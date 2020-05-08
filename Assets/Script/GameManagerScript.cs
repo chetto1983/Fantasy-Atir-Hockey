@@ -125,7 +125,6 @@ public class GameManagerScript : MonoBehaviour
                 {
                     
                     Invoke("CreateBall", 2f);
-
                     fsm = 5;
 
                 }
@@ -332,13 +331,8 @@ public class GameManagerScript : MonoBehaviour
             Set1Player();
         else
             Set2Player();
-
-
-
-
         
     }
-    #endregion
 
     void MaxScore()
     {
@@ -346,7 +340,7 @@ public class GameManagerScript : MonoBehaviour
             maxScore = PlayerPrefs.GetInt("maxScore");
         else
             maxScore = 7;
-            PlayerPrefs.SetInt("maxScore", maxScore);
+        PlayerPrefs.SetInt("maxScore", maxScore);
 
 
         if (maxScore == 3)
@@ -358,6 +352,10 @@ public class GameManagerScript : MonoBehaviour
             if (maxScore == 15)
             SetMaxScore15();
     }
+
+    #endregion
+
+
 
 
     void CreateBall()
