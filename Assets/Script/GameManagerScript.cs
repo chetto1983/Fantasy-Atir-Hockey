@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManagerScript : MonoBehaviour
 {
 
-
+    #region variable
     public static GameManagerScript current;
 
     public int modality;// 1 AI, 2 giocatori
@@ -16,14 +16,14 @@ public class GameManagerScript : MonoBehaviour
     public bool isgoal;
     public float difficulties;
 
-    public Text scorePlayer1Txt, scorePlayer2Txt,modeTxt,difficulty;
+    public Text scorePlayer1Txt, scorePlayer2Txt,equalTxt,modeTxt,difficulty;
     public int scorePlayer1, scorePlayer2;
     public GameObject panelStartObj, easyBt, normalBt, hardBt,ballObj, player1Obj, player2Obj,aiObj,set3Obj, set7Obj, set15Obj;
     public Rigidbody ballRb;
     public GameObject goalPlayer1, goalPlayer2,winPlayer1, winPlayer2,gameOverPanel;
     public int goal; //1,2;
     public int maxScore;
-
+    #endregion
 
     private void Awake()
     {
@@ -50,6 +50,7 @@ public class GameManagerScript : MonoBehaviour
     void Update()
     {
 
+        #region Finite state machine
         switch (fsm)
         {
             case 0:
@@ -61,12 +62,21 @@ public class GameManagerScript : MonoBehaviour
                 Difficulties();
                 Modality();
                 MaxScore();
+                scorePlayer1Txt.enabled= false;
+                scorePlayer2Txt.enabled=false;
+                equalTxt.enabled = false;
+
                 fsm = 1;
                 break;
 
             case 1:
                 if (isStarted)
                 {
+                    
+                    scorePlayer1Txt.enabled = true;
+                    scorePlayer2Txt.enabled = true;
+                    equalTxt.enabled = true;
+
                     PlayerPrefs.SetInt("modality", modality);
                     PlayerPrefs.SetInt("maxScore", maxScore);
                     PlayerPrefs.SetFloat("difficulties", difficulties);
@@ -113,12 +123,38 @@ public class GameManagerScript : MonoBehaviour
 
                 // Goal!!!!!!
 
+
+
+
                 scorePlayer1Txt.text = scorePlayer1.ToString();
                 scorePlayer2Txt.text = scorePlayer2.ToString();
                 if (goal == 1)
+
                     goalPlayer1.SetActive(true);
                 else
                     goalPlayer2.SetActive(true);
+
+
+                if (scorePlayer1> scorePlayer2)
+                {
+
+                    scorePlayer1Txt.GetComponent<Text>().color = Color.green;
+                    scorePlayer2Txt.GetComponent<Text>().color = Color.red;
+                }
+
+                else if (scorePlayer2 > scorePlayer1)
+                {
+                    scorePlayer2Txt.GetComponent<Text>().color = Color.green;
+                    scorePlayer1Txt.GetComponent<Text>().color = Color.red;
+
+                }
+
+                else
+                {
+                    scorePlayer1Txt.GetComponent<Text>().color = Color.white;
+                    scorePlayer2Txt.GetComponent<Text>().color = Color.white;
+
+                }
                     
 
                 if (scorePlayer1 < maxScore  && scorePlayer2 < maxScore)
@@ -166,8 +202,6 @@ public class GameManagerScript : MonoBehaviour
 
             case 7:
                 isWin = false;
-                winPlayer1.SetActive(false);
-                winPlayer1.SetActive(false);
                 Invoke("GameOver", 2f);
                 fsm = 8;
                 break;
@@ -193,22 +227,14 @@ public class GameManagerScript : MonoBehaviour
                     fsm = 3;
                     
                 }
-                    
-
-
                 break;
-
-
-
         }
+        #endregion
 
-
-
-        
     }
 
 
-    #region setting
+    #region settings
     public void Set1Player()
     {
 
@@ -249,7 +275,7 @@ public class GameManagerScript : MonoBehaviour
     public void SetNormal()
     {
 
-        difficulties = 0.7f;
+        difficulties = 0.5f;
         easyBt.GetComponent<Image>().color = Color.white;
         normalBt.GetComponent<Image>().color = Color.green;
         hardBt.GetComponent<Image>().color = Color.white;
@@ -311,7 +337,7 @@ public class GameManagerScript : MonoBehaviour
         if (difficulties == 0.2f)
             SetEasy();
         else
-            if (difficulties == 0.7f)
+            if (difficulties == 0.5f)
             SetNormal();
         else
             if (difficulties == 1f)
@@ -397,7 +423,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
 
-    public void StartGame()
+   public void StartGame()
     {
         if(modality>0 && difficulties > 0f && maxScore >0)
             isStarted = true;
@@ -420,6 +446,8 @@ public class GameManagerScript : MonoBehaviour
         goal = 0;
         isgoal = false;
         isWin = false;
+        scorePlayer1Txt.GetComponent<Text>().color = Color.white;
+        scorePlayer2Txt.GetComponent<Text>().color = Color.white;
         scorePlayer1Txt.text = scorePlayer1.ToString();
         scorePlayer2Txt.text = scorePlayer2.ToString();
         CreateBall();

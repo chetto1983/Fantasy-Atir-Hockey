@@ -44,10 +44,10 @@ public class Player2Script : MonoBehaviour
 
             }
 
-            if (transform.position.z > 4.45f)
+            if (transform.position.z > 4.2f)
             {
                 transformer.enabled = false;
-                gameObject.transform.position = new Vector3(transform.position.x, transform.position.y, 4.45f);
+                gameObject.transform.position = new Vector3(transform.position.x, transform.position.y, 4.2f);
 
             }
 

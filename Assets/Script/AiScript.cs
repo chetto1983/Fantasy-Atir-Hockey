@@ -42,12 +42,12 @@ public class AiScript : MonoBehaviour
             }
             else if (difficulty >= 0.45f && difficulty < 1f)
             {
-                basePoint = new Vector3(0, transform.position.y, 2f);
-                difficulty = 0.7f;
+                basePoint = new Vector3(0, transform.position.y, 1.5f);
+                difficulty = 0.5f;
             }
             else if (difficulty == 1f)
             {
-                basePoint = new Vector3(0, transform.position.y, 3.5f);
+                basePoint = new Vector3(0, transform.position.y, 3.8f);
             }
 
         }
@@ -72,7 +72,7 @@ public class AiScript : MonoBehaviour
                     //4f * Time.deltaTime states time to transit the two positions
 
                 }
-                else //if less than 2 second change your x-position based on difficulty, i.e. try to move closer to striker
+                else //if less than 1 second change your x-position based on difficulty, i.e. try to move closer to striker
                     transform.position = new Vector3(ball.transform.position.x * difficulty, transform.position.y , transform.position.z);
             }
             else //if in other half then move towards base position
